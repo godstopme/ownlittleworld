@@ -33,14 +33,14 @@ get_random_string = random_string()
 # by conditions defined in the test task, this bot performs bulk post & like operations
 
 class User:
-    def __init__(self, posts_count: int, likes_count: int):
+    def __init__(self, posts_count: int, likes_count: int, base_url: str):
         self.posts_count = posts_count
         self.likes_count = likes_count
         self.credentials = {}
+        self.base_url = base_url
 
     def url(self, rel: str) -> str:
-        # TODO: get base uri from config
-        return f'http://127.0.0.1:8000/{rel}'
+        return f'{self.base_url}/{rel}'
 
     async def signup(self):
         # we could create and use here a bot-signup endpoint for internal services authentication
@@ -101,7 +101,7 @@ class Bot:
         self.config = config
 
         self.users = [
-            User(self.config['max_posts_per_user'], self.config['max_likes_per_user'])
+            User(self.config['max_posts_per_user'], self.config['max_likes_per_user'], config['base_url'])
             for _ in range(self.config['number_of_users'])
         ]
         self.queue = asyncio.Queue()
@@ -129,6 +129,7 @@ if __name__ == '__main__':
         'number_of_users': 2,
         'max_posts_per_user': 3,
         'max_likes_per_user': 3,
+        'base_url': 'http://127.0.0.1:8000',
     })
 
     asyncio.run(bot.run())

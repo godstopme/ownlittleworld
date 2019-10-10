@@ -77,8 +77,13 @@ WSGI_APPLICATION = 'ownlittleworld.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'psql_ownlittleworld',
+        'USER': 'postgres',
+        # in real app: either django-split-settings or .template file without password set
+        'PASSWORD': 'postgres',
+        'HOST': 'postgres' if os.environ.get('BACKEND_ENV') == 'prod' else '127.0.0.1',
+        'PORT': 5432,
     }
 }
 
@@ -134,3 +139,8 @@ JWT_AUTH = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+
+SITE_URL = 'http://127.0.0.1:8000'
+
+if os.environ.get('BACKEND_ENV') == 'celery':
+    SITE_URL = 'http://backend:8888'
