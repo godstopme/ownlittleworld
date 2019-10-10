@@ -13,6 +13,7 @@ psycopg2 = "*"
 requests = "*"
 aiohttp = "*"
 asyncpg = "*"
+djangorestframework-jwt = "*"
 
 [requires]
 python_version = "3.7"
