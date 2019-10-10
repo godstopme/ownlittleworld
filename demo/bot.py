@@ -129,7 +129,7 @@ if __name__ == '__main__':
         'number_of_users': 2,
         'max_posts_per_user': 3,
         'max_likes_per_user': 3,
-        'base_url': 'http://127.0.0.1:8000',
+        'base_url': 'http://127.0.0.1:8888',
     })
 
     asyncio.run(bot.run())

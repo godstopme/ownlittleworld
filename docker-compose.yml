@@ -35,10 +35,13 @@ services:
     build: .
     command: bash -c "touch celery.log && celery -A ownlittleworld worker -l info &> celery.log"
     restart: unless-stopped
+    ports:
+      - "8888"
     depends_on:
       redis:
         condition: service_started
     links:
       - redis
+      - backend
     environment:
-      BACKEND_ENV: 'prod'
+      BACKEND_ENV: 'celery'

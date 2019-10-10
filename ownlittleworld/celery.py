@@ -12,7 +12,9 @@ django.setup()
 from celery import Celery
 
 logger = logging.getLogger(__name__)
-redis_dsn = f'redis://{"redis" if os.environ.get("BACKEND_ENV") == "prod" else "localhost"}:6379'
+environ = os.environ.get('BACKEND_ENV')
+
+redis_dsn = f'redis://{"redis" if environ == "prod" or environ == "celery" else "localhost"}:6379'
 
 # NOTE: there's should another celery instance running in separated container
 app = Celery('backend_app', backend=redis_dsn, broker=redis_dsn)

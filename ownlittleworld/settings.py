@@ -25,7 +25,7 @@ SECRET_KEY = '0v2!!jk38x^lj*%olc3@(+eqd#yx!zv0!0wqk6hp^8_3-8@$hc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['backend', 'localhost', '127.0.0.1', '[::1]']
 
 # Application definition
 
@@ -140,7 +140,7 @@ JWT_AUTH = {
 
 AUTH_USER_MODEL = 'accounts.User'
 
-SITE_URL = 'http://127.0.0.1:8000'
+SITE_URL = 'http://127.0.0.1:8888'
 
 if os.environ.get('BACKEND_ENV') == 'celery':
     SITE_URL = 'http://backend:8888'
