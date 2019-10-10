@@ -12,4 +12,6 @@ def run_bot(config: Dict[str, Any]):
     config['base_url'] = settings.SITE_URL
     bot = Bot(config)
 
+    # safe because asyncio.run calls `new_event_loop`
+    # we only need to remember to explicitly pass event loop using `get_running_loop`
     asyncio.run(bot.run())

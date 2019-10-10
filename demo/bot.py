@@ -86,14 +86,20 @@ class User:
 
                     return post_resp['id']
 
-        return await asyncio.gather(*[perform_post() for _ in range(self.posts_count)])
+        return await asyncio.gather(
+            *[perform_post() for _ in range(self.posts_count)],
+            loop=asyncio.get_running_loop()
+        )
 
     async def like(self, posts_ids: List[int]):
         async def perform_like(post_id: int):
             async with self.session() as session:
                 await session.post(self.url(f'posts/{post_id}/like/'))
 
-        await asyncio.gather(*[perform_like(random.choice(posts_ids)) for _ in range(self.likes_count)])
+        await asyncio.gather(
+            *[perform_like(random.choice(posts_ids)) for _ in range(self.likes_count)],
+            loop=asyncio.get_running_loop()
+        )
 
 
 class Bot:
@@ -104,20 +110,24 @@ class Bot:
             User(self.config['max_posts_per_user'], self.config['max_likes_per_user'], config['base_url'])
             for _ in range(self.config['number_of_users'])
         ]
-        self.queue = asyncio.Queue()
-        self.semaphore = asyncio.Semaphore(5)
 
     async def post_activity(self) -> List[int]:
         async def signup_and_post(user: User) -> List[int]:
             await user.signup()
             return await user.post()
 
-        posts_by_users = await asyncio.gather(*list(map(signup_and_post, self.users)))
+        posts_by_users = await asyncio.gather(
+            *list(map(signup_and_post, self.users)),
+            loop=asyncio.get_running_loop()
+        )
 
         return list(itertools.chain.from_iterable(posts_by_users))
 
     async def like_activity(self, posts_ids: List[int]):
-        await asyncio.gather(*[user.like(posts_ids) for user in self.users])
+        await asyncio.gather(
+            *[user.like(posts_ids) for user in self.users],
+            loop=asyncio.get_running_loop()
+        )
 
     async def run(self):
         posts_ids = await self.post_activity()
