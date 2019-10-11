@@ -5,6 +5,15 @@ test task
 - `git glone`
 - `docker-compose up -d`
 
+**api**
+- `/accounts/`
+  -  `/signup/`
+  - `/login/`
+- `/posts/`
+  - `/{id}/`
+  - `/{id}/like/` `/{id}/unlike/`
+- `/demo/bot/`
+
 **to check**
 - navigate to localhost:8888, do some actions
 - to schedule activity demo bot, enter docker container with backend app and execute `python manage.py createsuperuser`
